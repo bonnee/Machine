@@ -6,7 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Xml.XPath;
 
-namespace TM
+namespace Machine
 {
 	class Program
 	{

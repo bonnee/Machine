@@ -1,6 +1,0 @@
-/media/matteo/crime/TM/TM/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/media/matteo/crime/TM/TM/obj/Debug/TM.exe
-/media/matteo/crime/TM/TM/bin/Debug/TM.exe.config
-/media/matteo/crime/TM/TM/bin/Debug/TM.exe.mdb
-/media/matteo/crime/TM/TM/bin/Debug/TM.exe
-/media/matteo/crime/TM/TM/obj/Debug/TM.exe.mdb
