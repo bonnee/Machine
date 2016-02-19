@@ -1,0 +1,6 @@
+\\repo\studenti$\informatica\sezbi\5bi\matteo.bonora\documenti\visual studio 2013\Projects\TM\TM\bin\Debug\TM.exe.config
+\\repo\studenti$\informatica\sezbi\5bi\matteo.bonora\documenti\visual studio 2013\Projects\TM\TM\bin\Debug\TM.exe
+\\repo\studenti$\informatica\sezbi\5bi\matteo.bonora\documenti\visual studio 2013\Projects\TM\TM\bin\Debug\TM.pdb
+\\repo\studenti$\informatica\sezbi\5bi\matteo.bonora\documenti\visual studio 2013\Projects\TM\TM\obj\Debug\TM.csprojResolveAssemblyReference.cache
+\\repo\studenti$\informatica\sezbi\5bi\matteo.bonora\documenti\visual studio 2013\Projects\TM\TM\obj\Debug\TM.exe
+\\repo\studenti$\informatica\sezbi\5bi\matteo.bonora\documenti\visual studio 2013\Projects\TM\TM\obj\Debug\TM.pdb
