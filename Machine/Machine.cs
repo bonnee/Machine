@@ -35,7 +35,20 @@ namespace Machine
 
 		#endregion
 
-		public void Run (string state = "0", int delay = 0)
+		/// <summary>
+		/// Sets the content of the program to be executed
+		/// </summary>
+		/// <param name="program">Program.</param>
+		public void SetProgram (List<string> program)
+		{
+			Program = new List<string[]> ();
+			foreach (string line in program)
+				Program.Add (line.Split (' '));
+		}
+
+		#region Runtime
+
+		public void Run (int delay = 0, string state = "0")
 		{
 			while (state != "halt") {
 				string[] command = GetCommand ();
@@ -59,13 +72,10 @@ namespace Machine
 			}
 		}
 
-		public void SetProgram (List<string> program)
-		{
-			Program = new List<string[]> ();
-			foreach (string line in program)
-				Program.Add (line.Split (' '));
-		}
-
+		/// <summary>
+		/// Gets the command to be executed between all the overloads of the current state
+		/// </summary>
+		/// <returns>The line.</returns>
 		string[] GetCommand ()
 		{
 			List<string[]> cmds = new List<string[]> ();
@@ -85,5 +95,6 @@ namespace Machine
 			}
 		}
 	}
+	#endregion
 }
 
