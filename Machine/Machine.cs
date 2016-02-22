@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace Machine
 {
@@ -8,7 +9,7 @@ namespace Machine
 	{
 		public List<char> Memory { get; set; }
 
-		public List<string[]> Program { get; set; }
+		private List<string[]> Program { get; set; }
 
 		public string state { get; set; }
 
@@ -36,20 +37,33 @@ namespace Machine
 
 		public void Run (string state = "0", int delay = 0)
 		{
-			string[] command = GetCommand ();
+			while (state != "halt") {
+				string[] command = GetCommand ();
 
-			if (command [1] == "*" || Memory [index] == Convert.ToChar (command [1])) {
-				if (command [2] != "*")
-					Memory [index] = Convert.ToChar (command [2]);
-				switch (command [3]) {
-				case "r":
-					index++;
-					break;
-				case "l":
-					index--;
-					break;
+				if (command [1] == "*" || Memory [index] == Convert.ToChar (command [1])) {
+					if (command [2] != "*")
+						Memory [index] = Convert.ToChar (command [2]);
+					switch (command [3]) {
+					case "r":
+						index++;
+						break;
+					case "l":
+						index--;
+						break;
+					}
+
+					state = command [4];
 				}
+
+				Thread.Sleep (delay);
 			}
+		}
+
+		public void SetProgram (List<string> program)
+		{
+			Program = new List<string[]> ();
+			foreach (string line in program)
+				Program.Add (line.Split (' '));
 		}
 
 		string[] GetCommand ()
