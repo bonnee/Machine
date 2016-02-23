@@ -43,6 +43,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Examples\bintodec.tm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Examples\busybeaver.tm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

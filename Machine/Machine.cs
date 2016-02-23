@@ -62,10 +62,16 @@ namespace Machine
 						mem [index] = Convert.ToChar (command [2]);
 					switch (command [3]) {
 					case "r":
-						index++;
-						break;
+                            if (index == Memory.Count-1)
+                                Memory.Add('_');
+                            else
+                                index++;
+                            break;
 					case "l":
-						index--;
+                            if (index == 0)
+                                Memory.Insert(0, '_');
+                            else
+                                index--;
 						break;
 					}
 
@@ -109,18 +115,7 @@ namespace Machine
 			try {
                 return cmds[inp.IndexOf(mem[index].ToString())];
             } catch {
-                try
-                {
-                    //Console.WriteLine(cmds[inp.IndexOf("_")][1]);
-                    return cmds[inp.IndexOf("*")];
-                }
-                catch (ArgumentOutOfRangeException e)
-                {
-                    Console.WriteLine(e.Message);
-                    return default(string[]);
-                    /*Memory.Insert(index + 1, '_');
-                    return GetCommand();*/
-                }
+                return cmds[inp.IndexOf("*")];
 			}
 		}
 	}
