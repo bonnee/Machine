@@ -7,7 +7,8 @@ namespace Machine
 {
 	public class Machine
 	{
-		public List<char> Memory { get; set; }
+        List<char> mem = new List<char>();
+        public List<char> Memory { get { return mem; } set { mem = value; mem.Insert(0, '_'); mem.Add('_'); } }
 
 		private List<string[]> Program { get; set; }
 
@@ -59,7 +60,7 @@ namespace Machine
 
 				if (command [1] == "*" || Memory [index] == Convert.ToChar (command [1])) {
 					if (command [2] != "*")
-						Memory [index] = Convert.ToChar (command [2]);
+						mem [index] = Convert.ToChar (command [2]);
 					switch (command [3]) {
 					case "r":
 						index++;
@@ -107,16 +108,19 @@ namespace Machine
 			}
 
 			try {
-				return cmds [inp.IndexOf (Memory [index].ToString ())];
+                return cmds[inp.IndexOf(mem[index].ToString())];
             } catch {
                 try
                 {
+                    //Console.WriteLine(cmds[inp.IndexOf("_")][1]);
                     return cmds[inp.IndexOf("*")];
                 }
                 catch (ArgumentOutOfRangeException e)
                 {
-                    Memory.Add('_');
-                    return GetCommand();
+                    Console.WriteLine(e.Message);
+                    return default(string[]);
+                    /*Memory.Insert(index + 1, '_');
+                    return GetCommand();*/
                 }
 			}
 		}
