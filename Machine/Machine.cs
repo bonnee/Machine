@@ -13,7 +13,7 @@ namespace Machine
 
 		public string state { get; set; }
 
-		int index = 0;
+		public int index = 0;
 
 		#region Constructors
 
@@ -48,9 +48,13 @@ namespace Machine
 
 		#region Runtime
 
-		public void Run (int delay = 0, string state = "0")
+		public void Run (string s,int delay = 0)
 		{
+            state = s;
+            Print();
 			while (state != "halt") {
+                Print();
+
 				string[] command = GetCommand ();
 
 				if (command [1] == "*" || Memory [index] == Convert.ToChar (command [1])) {
@@ -70,7 +74,21 @@ namespace Machine
 
 				Thread.Sleep (delay);
 			}
+            Print();
 		}
+
+
+        void Print()
+        {
+            Console.Clear();
+            foreach (char c in Memory)
+            {
+                Console.Write(c);
+            }
+            Console.WriteLine();
+            Console.CursorLeft = index;
+            Console.Write("^\nState: " + state);
+        }
 
 		/// <summary>
 		/// Gets the command to be executed between all the overloads of the current state
@@ -90,8 +108,16 @@ namespace Machine
 
 			try {
 				return cmds [inp.IndexOf (Memory [index].ToString ())];
-			} catch {
-				return cmds [inp.IndexOf ("*")];
+            } catch {
+                try
+                {
+                    return cmds[inp.IndexOf("*")];
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    Memory.Add('_');
+                    return GetCommand();
+                }
 			}
 		}
 	}
