@@ -14,6 +14,7 @@ namespace Machine
         public string state { get; set; }
 
         public int index = 0;
+        public int count = 0;
 
         #region Constructors
 
@@ -81,6 +82,7 @@ namespace Machine
 
                     state = command[4];
                 }
+                count++;
                 if (delay > 0)
                     Thread.Sleep(delay);
             }
@@ -97,7 +99,7 @@ namespace Machine
             }
             Console.WriteLine();
             Console.CursorLeft = index;
-            Console.Write("^\nState: " + state);
+            Console.Write("^\nCount" + count + " State: " + state);
         }
 
         /// <summary>

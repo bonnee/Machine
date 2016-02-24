@@ -7,13 +7,14 @@ namespace Interface
 {
 	class MainClass
 	{
-        static Machine.Machine m = new Machine.Machine(new List<char> { '1', '1', '1', '1', '1', '1', '1', '1' });
-
 		public static void Main (string[] args)
 		{
-            m.SetProgram(new List<string>(File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"Examples/bintodec.tm"))));
+            Machine.Machine m = new Machine.Machine();
+            m.SetProgram(new List<string>(File.ReadAllLines(args[0])));
+            m.Memory = new List<char> { '1', '1', '1', '1', '1', '1', '1', '1' };
+            //m.SetProgram(new List<string>(File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"Examples/bintodec.tm"))));
 
-			m.Run ("0", 0);
+			m.Run ("0", Convert.ToInt32(args[1]));
 
             Console.ReadLine();
 		}
