@@ -99,7 +99,7 @@ namespace Machine
             }
             Console.WriteLine();
             Console.CursorLeft = index;
-            Console.Write("^\nCount" + count + " State: " + state);
+            Console.Write("^\nCount: " + count + " State: " + state);
         }
 
         /// <summary>
