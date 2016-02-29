@@ -120,11 +120,10 @@ namespace Machine
                 }
             }
 
-            try
-            {
+            if(inp.Contains(mem[index].ToString())){
                 return cmds[inp.IndexOf(mem[index].ToString())];
             }
-            catch
+            else
             {
                 return cmds[inp.IndexOf("*")];
             }
