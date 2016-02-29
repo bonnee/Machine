@@ -1,0 +1,13 @@
+﻿0 * H r e
+e * e r l
+l * l r l2
+l2 * l r o
+o * o r space
+space * _ r W
+W * W r o2
+o2 * o r r
+r * r r l3
+l3 * l r d
+d * d r clean
+clean * _ r clean
+clean _ * * halt
