@@ -23,3 +23,7 @@
 
 accept * : r accept2
 accept2 * ) * halt
+
+reject _ : r reject2
+reject * _ l reject
+reject2 * ( * halt

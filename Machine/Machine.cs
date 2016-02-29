@@ -16,7 +16,7 @@ namespace Machine
 			get { return mem; }
 			set {
 				mem = value;
-				mem.Insert (0, '_');
+				//mem.Insert (0, '_');
 				mem.Add ('_');
 			}
 		}
