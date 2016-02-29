@@ -18,7 +18,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
-    <Commandlineparameters> Examples/isprime.tm 0</Commandlineparameters>
+    <Commandlineparameters> Examples/bintodec.tm 0</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -28,7 +28,7 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <Prefer32Bit>true</Prefer32Bit>
-    <Commandlineparameters>Examples/isprime.tm 0</Commandlineparameters>
+    <Commandlineparameters>Examples/bintodec.tm 200</Commandlineparameters>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

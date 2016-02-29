@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.IO;
+using System.Dynamic;
+using System.Configuration;
+using System.Runtime.CompilerServices;
 
 namespace Machine
 {
@@ -23,6 +27,19 @@ namespace Machine
 
 		public int index = 0;
 		public int count = 0;
+
+		/// <summary>
+		/// Raises the cycle event.
+		/// </summary>
+		/// <param name="e">The event args</param>
+		protected virtual void OnCycle (CycleEventArgs e)
+		{
+			EventHandler<CycleEventArgs> ev = Cycle;
+			if (ev != null)
+				ev (this, e);
+		}
+
+		public event EventHandler<CycleEventArgs> Cycle;
 
 		#region Constructors
 
@@ -61,9 +78,7 @@ namespace Machine
 		{
 			state = s;
 			string[] command;
-			Print ();
 			while (state != "halt") {
-				Print ();
 
 				command = GetCommand ();
 
@@ -87,23 +102,11 @@ namespace Machine
 
 					state = command [4];
 				}
+				OnCycle (new CycleEventArgs (Memory.ToArray (), state, index, count));
 				count++;
 				if (delay > 0)
 					Thread.Sleep (delay);
 			}
-			Print ();
-		}
-
-
-		void Print ()
-		{
-			Console.Clear ();
-			foreach (char c in Memory) {
-				Console.Write (c);
-			}
-			Console.WriteLine ();
-			Console.CursorLeft = index;
-			Console.Write ("^\nCount: " + count + " State: " + state);
 		}
 
 		/// <summary>
@@ -128,7 +131,27 @@ namespace Machine
 				return cmds [inp.IndexOf ("*")];
 			
 		}
+
+		#endregion
 	}
-	#endregion
+
+	public class CycleEventArgs : EventArgs
+	{
+		public char[] Memory{ get; set; }
+
+		public string State  { get; set; }
+
+		public int Index { get; set; }
+
+		public int Count { get; set; }
+
+		public CycleEventArgs (char[] memory, string state, int index, int count)
+		{
+			Memory = memory;
+			State = state;
+			Index = index;
+			Count = count;
+		}
+	}
 }
 
