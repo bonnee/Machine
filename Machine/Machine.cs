@@ -11,12 +11,7 @@ namespace Machine
         public List<char> Memory
         {
             get { return mem; }
-            set
-            {
-                mem = value;
-                //mem.Insert (0, '_');
-                //mem.Add ('_');
-            }
+            set { mem = value; }
         }
 
         private List<string[]> Program { get; set; }
@@ -39,6 +34,10 @@ namespace Machine
 
         public event EventHandler<TuringEventArgs> Cycle;
 
+        /// <summary>
+        /// Raises the Finish event
+        /// </summary>
+        /// <param name="e">The event args</param>
         protected virtual void OnFinish(TuringEventArgs e)
         {
             EventHandler<TuringEventArgs> ev = Finish;
@@ -80,6 +79,11 @@ namespace Machine
 
         #region Runtime
 
+        /// <summary>
+        /// Starts the turing machine
+        /// </summary>
+        /// <param name="s">The initial state</param>
+        /// <param name="delay">The delay to apply to each cycle of the machine</param>
         public void Run(string s, int delay = 0)
         {
             state = s;
@@ -114,9 +118,9 @@ namespace Machine
         }
 
         /// <summary>
-        /// Gets the command to be executed between all the overloads of the current state
+        /// Gets the command to be executed between all the commands of the current state
         /// </summary>
-        /// <returns>The line.</returns>
+        /// <returns>The command to execute</returns>
         string[] GetCommand()
         {
             List<string[]> cmds = new List<string[]>();
