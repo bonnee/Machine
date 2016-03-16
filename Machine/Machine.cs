@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.IO;
-using System.Dynamic;
-using System.Configuration;
-using System.Runtime.CompilerServices;
 
 namespace Machine
 {
@@ -17,7 +13,7 @@ namespace Machine
 			set {
 				mem = value;
 				//mem.Insert (0, '_');
-				mem.Add ('_');
+				//mem.Add ('_');
 			}
 		}
 
@@ -32,14 +28,22 @@ namespace Machine
 		/// Raises the cycle event.
 		/// </summary>
 		/// <param name="e">The event args</param>
-		protected virtual void OnCycle (CycleEventArgs e)
+        protected virtual void OnCycle(TuringEventArgs e)
 		{
-			EventHandler<CycleEventArgs> ev = Cycle;
+            EventHandler<TuringEventArgs> ev = Cycle;
 			if (ev != null)
 				ev (this, e);
 		}
 
-		public event EventHandler<CycleEventArgs> Cycle;
+        public event EventHandler<TuringEventArgs> Cycle;
+
+        protected virtual void OnFinish(TuringEventArgs e)
+        {
+            EventHandler<TuringEventArgs> ev = Finish;
+            if (ev != null)
+                ev(this, e);
+        }
+        public event EventHandler<TuringEventArgs> Finish;
 
 		#region Constructors
 
@@ -102,11 +106,12 @@ namespace Machine
 
 					state = command [4];
 				}
-				OnCycle (new CycleEventArgs (Memory.ToArray (), state, index, count));
+				OnCycle (new TuringEventArgs (Memory.ToArray (), state, index, count));
 				count++;
 				if (delay > 0)
 					Thread.Sleep (delay);
 			}
+            OnFinish(new TuringEventArgs(Memory.ToArray(),state,index,count));
 		}
 
 		/// <summary>
@@ -135,7 +140,7 @@ namespace Machine
 		#endregion
 	}
 
-	public class CycleEventArgs : EventArgs
+	public class TuringEventArgs : EventArgs
 	{
 		public char[] Memory{ get; set; }
 
@@ -145,7 +150,7 @@ namespace Machine
 
 		public int Count { get; set; }
 
-		public CycleEventArgs (char[] memory, string state, int index, int count)
+		public TuringEventArgs (char[] memory, string state, int index, int count)
 		{
 			Memory = memory;
 			State = state;

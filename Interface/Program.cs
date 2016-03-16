@@ -1,9 +1,8 @@
-﻿using System;
-using System.Reflection;
+﻿using Machine;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Security.Principal;
-using Machine;
 
 namespace Interface
 {
@@ -16,22 +15,26 @@ namespace Interface
 			m.SetProgram (new List<string> (File.ReadAllLines (args [0])));
 			m.Memory = new List<char> (args [1]);
 
-			m.Cycle += Print;
+            Console.Write("Computing...");
+            Stopwatch s = new Stopwatch();
+            s.Start();
 			m.Run ("0", Convert.ToInt32 (args [2]));
+            s.Stop();
 
-			Console.ReadLine ();
+            Print(m.Memory.ToArray(), m.count, s.Elapsed);
+
+            Console.ReadLine();
 		}
 
 
-		static void Print (object sender, CycleEventArgs e)
+        static void Print(char[] memory, int count, TimeSpan elapsed)
 		{
 			Console.Clear ();
-			foreach (char c in e.Memory) {
+			foreach (char c in memory) {
 				Console.Write (c);
 			}
 			Console.WriteLine ();
-			Console.CursorLeft = e.Index;
-			Console.Write ("^\nCount: " + e.Count + " State: " + e.State);
+			Console.Write ("^\nCount: " + count + " Elapsed: " + elapsed.ToString());
 		}
 	}
 }
