@@ -18,7 +18,7 @@ namespace Interface
             Console.Write("Computing...");
             Stopwatch s = new Stopwatch();
             s.Start();
-			m.Run ("0", Convert.ToInt32 (args [2]));
+			m.Run ("0");
             s.Stop();
 
             Print(m.Memory.ToArray(), m.count, s.Elapsed);
