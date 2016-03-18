@@ -123,21 +123,20 @@ namespace Machine
         /// <returns>The command to execute</returns>
         string[] GetCommand()
         {
-            List<string[]> cmds = new List<string[]>();
-            List<string> inp = new List<string>();
+            Dictionary<string, string[]> commands = new Dictionary<string, string[]>();
 
             foreach (string[] cmd in Program)
-            {
                 if (cmd[0] == state)
-                {
-                    cmds.Add(cmd);
-                    inp.Add(cmd[1]);
-                }
-            }
+                    commands.Add(cmd[1], cmd);
 
-            if (inp.Contains(mem[index].ToString()))
-                return cmds[inp.IndexOf(mem[index].ToString())];
-            return cmds[inp.IndexOf("*")];
+            string[] outp;
+            if(!commands.TryGetValue(mem[index].ToString(), out outp))
+                return commands["*"];
+            return outp;
+
+            /*if (commands.ContainsKey(mem[index].ToString()))
+                return commands[mem[index].ToString()]; //inp.IndexOf(mem[index].ToString())
+            return commands[mem[index].ToString()];*/
         }
 
         #endregion
