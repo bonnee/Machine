@@ -117,26 +117,24 @@ namespace Machine
             OnFinish(new TuringEventArgs(Memory.ToArray(), state, index, count));
         }
 
+        // Declare commands and outp only once to improve performance
+        Dictionary<string, string[]> commands = new Dictionary<string, string[]>();
+        string[] outp;
         /// <summary>
         /// Gets the command to be executed between all the commands of the current state
         /// </summary>
         /// <returns>The command to execute</returns>
         string[] GetCommand()
         {
-            Dictionary<string, string[]> commands = new Dictionary<string, string[]>();
+            commands.Clear();
 
             foreach (string[] cmd in Program)
                 if (cmd[0] == state)
                     commands.Add(cmd[1], cmd);
 
-            string[] outp;
-            if(!commands.TryGetValue(mem[index].ToString(), out outp))
+            if (!commands.TryGetValue(mem[index].ToString(), out outp))
                 return commands["*"];
             return outp;
-
-            /*if (commands.ContainsKey(mem[index].ToString()))
-                return commands[mem[index].ToString()]; //inp.IndexOf(mem[index].ToString())
-            return commands[mem[index].ToString()];*/
         }
 
         #endregion
