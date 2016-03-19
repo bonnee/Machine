@@ -15,26 +15,22 @@ namespace Interface
 			m.SetProgram (new List<string> (File.ReadAllLines (args [0])));
 			m.Memory = new List<char> (args [1]);
 
-            Console.Write("Computing...");
-            Stopwatch s = new Stopwatch();
-            s.Start();
+			Console.Write ("Computing...");
+			Stopwatch s = new Stopwatch ();
+			s.Start ();
 			m.Run ("0");
-            s.Stop();
+			s.Stop ();
 
-            Print(m.Memory.ToArray(), m.count, s.Elapsed);
-
-            Console.ReadLine();
+			Console.WriteLine ("Done.");
+			Print (m.Memory.ToArray (), m.count, s.Elapsed);
 		}
 
 
-        static void Print(char[] memory, int count, TimeSpan elapsed)
+		static void Print (char[] memory, int count, TimeSpan elapsed)
 		{
-			Console.Clear ();
-			foreach (char c in memory) {
+			foreach (char c in memory)
 				Console.Write (c);
-			}
-			Console.WriteLine ();
-			Console.Write ("^\nCount: " + count + " Elapsed: " + elapsed.ToString());
+			Console.WriteLine ("\n\nCount: " + count + " Elapsed: " + elapsed.ToString ());
 		}
 	}
 }
