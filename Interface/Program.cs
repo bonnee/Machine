@@ -6,10 +6,10 @@ using System.IO;
 
 namespace Interface
 {
-    class MainClass
-    {
+	class MainClass
+	{
         public static void Main(string[] args)
-        {
+		{
             Machine.Machine m = new Machine.Machine();
 
             m.SetProgram(new List<string>(File.ReadAllLines(args[0])));
@@ -21,21 +21,16 @@ namespace Interface
             m.Run("0");
             s.Stop();
 
-            Print(m.Memory.ToArray(), m.count, s.Elapsed);
+			Console.WriteLine ("Done.");
+			Print (m.Memory.ToArray (), m.count, s.Elapsed);
+		}
 
-            Console.ReadLine();
-        }
 
-
-        static void Print(char[] memory, int count, TimeSpan elapsed)
-        {
-            Console.Clear();
-            foreach (char c in memory)
-            {
-                Console.Write(c);
-            }
-            Console.WriteLine();
-            Console.Write("^\nCount: " + count + " Elapsed: " + elapsed.ToString());
-        }
-    }
+		static void Print (char[] memory, int count, TimeSpan elapsed)
+		{
+			foreach (char c in memory)
+				Console.Write (c);
+			Console.WriteLine ("\n\nCount: " + count + " Elapsed: " + elapsed.ToString ());
+		}
+	}
 }
