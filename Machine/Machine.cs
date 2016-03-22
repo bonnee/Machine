@@ -6,13 +6,7 @@ namespace Machine
 {
     public class Machine
     {
-        List<char> mem = new List<char>();
-
-        public List<char> Memory
-        {
-            get { return mem; }
-            set { mem = value; }
-        }
+        public List<char> Memory { get; set; }
 
         private List<string[]> Program { get; set; }
 
@@ -25,26 +19,26 @@ namespace Machine
         /// Raises the cycle event.
         /// </summary>
         /// <param name="e">The event args</param>
-        protected virtual void OnCycle(TuringEventArgs e)
+        protected virtual void OnCycle(MachineEventArgs e)
         {
-            EventHandler<TuringEventArgs> ev = Cycle;
+            EventHandler<MachineEventArgs> ev = Cycle;
             if (ev != null)
                 ev(this, e);
         }
 
-        public event EventHandler<TuringEventArgs> Cycle;
+        public event EventHandler<MachineEventArgs> Cycle;
 
         /// <summary>
         /// Raises the Finish event
         /// </summary>
         /// <param name="e">The event args</param>
-        protected virtual void OnFinish(TuringEventArgs e)
+        protected virtual void OnFinish(MachineEventArgs e)
         {
-            EventHandler<TuringEventArgs> ev = Finish;
+            EventHandler<MachineEventArgs> ev = Finish;
             if (ev != null)
                 ev(this, e);
         }
-        public event EventHandler<TuringEventArgs> Finish;
+        public event EventHandler<MachineEventArgs> Finish;
 
         #region Constructors
 
@@ -95,7 +89,7 @@ namespace Machine
                 if (command[1] == "*" || Memory[index] == Convert.ToChar(command[1]))
                 {
                     if (command[2] != "*")
-                        mem[index] = Convert.ToChar(command[2]);
+                        Memory[index] = Convert.ToChar(command[2]);
                     if (command[3] == "r")
                         if (index == Memory.Count - 1)
                             Memory.Add('_');
@@ -109,15 +103,15 @@ namespace Machine
 
                     state = command[4];
                 }
-                OnCycle(new TuringEventArgs(Memory.ToArray(), state, index, count));
+                OnCycle(new MachineEventArgs(Memory.ToArray(), state, index, count));
                 count++;
                 if (delay > 0)
                     Thread.Sleep(delay);
             }
-            OnFinish(new TuringEventArgs(Memory.ToArray(), state, index, count));
+            OnFinish(new MachineEventArgs(Memory.ToArray(), state, index, count));
         }
 
-        // Declare commands and outp only once to improve performance
+        // Declare GetCommand's variables outside the method to improve performance
         Dictionary<string, string[]> commands = new Dictionary<string, string[]>();
         string[] outp;
         /// <summary>
@@ -132,7 +126,7 @@ namespace Machine
                 if (cmd[0] == state)
                     commands.Add(cmd[1], cmd);
 
-            if (!commands.TryGetValue(mem[index].ToString(), out outp))
+            if (!commands.TryGetValue(Memory[index].ToString(), out outp))
                 return commands["*"];
             return outp;
         }
@@ -140,7 +134,7 @@ namespace Machine
         #endregion
     }
 
-    public class TuringEventArgs : EventArgs
+    public class MachineEventArgs : EventArgs
     {
         public char[] Memory { get; set; }
 
@@ -150,7 +144,7 @@ namespace Machine
 
         public int Count { get; set; }
 
-        public TuringEventArgs(char[] memory, string state, int index, int count)
+        public MachineEventArgs(char[] memory, string state, int index, int count)
         {
             Memory = memory;
             State = state;
