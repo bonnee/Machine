@@ -9,5 +9,5 @@ o2 * o r r
 r * r r l3
 l3 * l r d
 d * d r clean
-clean * _ r clean
 clean _ * * halt
+clean * _ r clean
