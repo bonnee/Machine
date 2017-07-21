@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -7,7 +7,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Interface</RootNamespace>
     <AssemblyName>Interface</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <ReleaseVersion>1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -58,12 +58,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\Machine\Machine.csproj">
-      <Project>{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}</Project>
-      <Name>Machine</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <None Include="Examples\binsum.tm">
@@ -90,5 +84,11 @@
     <None Include="Examples\test.tm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Machine\Machine.csproj">
+      <Project>{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}</Project>
+      <Name>Machine</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
