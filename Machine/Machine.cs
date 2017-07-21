@@ -6,13 +6,12 @@ namespace Machine
 {
     public class Machine
     {
-        public List<char> Memory { get; set; }
+        private Memory<char> memory;
 
         private List<string[]> Program { get; set; }
 
         public string state { get; set; }
 
-        public int index = 0;
         public int count = 0;
 
         /// <summary>
@@ -42,19 +41,13 @@ namespace Machine
 
         #region Constructors
 
-        public Machine()
+        public Machine(List<char> mem)
         {
-
+            memory = new Memory<char>(mem, '_');
         }
 
-        public Machine(List<char> memory)
+        public Machine(List<char> mem, List<string[]> program) : this(mem)
         {
-            Memory = memory;
-        }
-
-        public Machine(List<char> memory, List<string[]> program)
-        {
-            Memory = memory;
             Program = program;
         }
 
@@ -86,29 +79,23 @@ namespace Machine
             {
                 command = GetCommand();
 
-                if (command[1] == "*" || Memory[index] == Convert.ToChar(command[1]))
+                if (command[1] == "*" || memory.Read() == Convert.ToChar(command[1]))
                 {
                     if (command[2] != "*")
-                        Memory[index] = Convert.ToChar(command[2]);
+                        memory.Write(Convert.ToChar(command[2]));
                     if (command[3] == "r")
-                        if (index == Memory.Count - 1)
-                            Memory.Add('_');
-                        else
-                            index++;
+                        memory.moveRight();
                     else if (command[3] == "l")
-                        if (index == 0)
-                            Memory.Insert(0, '_');
-                        else
-                            index--;
+                        memory.moveLeft();
 
                     state = command[4];
                 }
-                OnCycle(new MachineEventArgs(Memory.ToArray(), state, index, count));
+                OnCycle(new MachineEventArgs(memory, state, index, count));
                 count++;
                 if (delay > 0)
                     Thread.Sleep(delay);
             }
-            OnFinish(new MachineEventArgs(Memory.ToArray(), state, index, count));
+            OnFinish(new MachineEventArgs(memory, state, index, count));
         }
 
         // Declare GetCommand's variables outside the method to improve performance
@@ -126,7 +113,7 @@ namespace Machine
                 if (cmd[0] == state)
                     commands.Add(cmd[1], cmd);
 
-            if (!commands.TryGetValue(Memory[index].ToString(), out outp))
+            if (!commands.TryGetValue(memory.Read().ToString(), out outp))
                 return commands["*"];
             return outp;
         }

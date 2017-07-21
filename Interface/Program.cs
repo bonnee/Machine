@@ -1,5 +1,4 @@
-﻿using Machine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,9 +7,14 @@ namespace Interface
 {
 	class MainClass
 	{
+		static Machine.Machine m = new Machine.Machine();
+
 		public static void Main(string[] args)
 		{
+			m.Cycle += cycle;
+
 			string mem = "_";
+			int delay = 0;
 
 			if (args.Length == 0)
 			{
@@ -21,6 +25,10 @@ namespace Interface
 			{
 				mem = args[1];
 			}
+			if (args.Length == 3)
+			{
+				delay = Convert.ToInt32(args[2]);
+			}
 
 			if (!File.Exists(args[0]))
 			{
@@ -28,20 +36,18 @@ namespace Interface
 				return;
 			}
 
-			Run(args[0], mem);
+			Run(args[0], mem, delay);
 		}
 
-		static void Run(string path, string mem)
+		static void Run(string path, string mem, int delay = 0)
 		{
-			Machine.Machine m = new Machine.Machine();
-
 			m.SetProgram(new List<string>(File.ReadAllLines(path)));
 			m.Memory = new List<char>(mem);
 
 			Console.Write("Computing...");
 			Stopwatch s = new Stopwatch();
 			s.Start();
-			m.Run("0");
+			m.Run("0", delay);
 			s.Stop();
 
 			Console.WriteLine("Done.");
@@ -58,6 +64,11 @@ namespace Interface
 			foreach (char c in memory)
 				Console.Write(c);
 			Console.WriteLine("\n\nCount: " + count + " Elapsed: " + elapsed.ToString());
+		}
+
+		static void cycle(object sender, Machine.MachineEventArgs e)
+		{
+			Print(e.Memory, e.Count, new TimeSpan(0));
 		}
 	}
 }
