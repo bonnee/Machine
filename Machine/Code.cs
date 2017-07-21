@@ -7,18 +7,27 @@ namespace Machine
 {
     public class Code
     {
-        private List<string[]> lines;
+        private CodeMatch<string, string, string[]> lines;
+        //private List<string[]> lines;
 
-        public Code(string program)
+        public Code(string[] program)
         {
-            lines = new List<string[]>();
+            //lines = new List<string[]>();
+            lines = new CodeMatch<string, string, string[]>();
 
-            String[] tmp = program.Split('\n');
-            tmp.ToList().ForEach(i => lines.Add(i.Split(' ')));
-        }
-        public Code(IEnumerable<string[]> program)
-        {
-            lines = new List<string[]>(program);
+            for (int i = 0; i < program.Length; i++)
+            {
+                string[] tmp = program[i].Split(' ');
+                if (tmp.Length == 5)
+                {
+                    if (!lines.ContainsKey(tmp[0]))
+                    {
+                        lines.Add(tmp[0], new Dictionary<string, string[]>());
+                    }
+
+                    lines[tmp[0]].Add(tmp[1], tmp);
+                }
+            }
         }
 
         /// <summary>
@@ -29,21 +38,40 @@ namespace Machine
         /// <returns>The right command line</returns>
         public string[] Match(string state, string cell)
         {
-            Dictionary<string, string[]> commands = new Dictionary<string, string[]>();
-            string[] rightCMD;
+            Dictionary<string, string[]> right;
+            String[] cmd;
 
-            foreach (string[] cmd in lines)
+            if (lines.TryGetValue(state, out right))
             {
-                if (cmd[0] == state)
+                if (!right.TryGetValue(cell, out cmd))
                 {
-                    commands.Add(cmd[1], cmd);
+                    return right["*"];
                 }
             }
+            else
+            {
+                throw new Exception();
+            }
 
-            if (!commands.TryGetValue(cell, out rightCMD))
-                return commands["*"];
+            return cmd;
+        }
+    }
 
-            return rightCMD;
+
+    public class CodeMatch<T1, T2, T3> : Dictionary<T1, Dictionary<T2, T3>>
+    {
+        new public Dictionary<T2, T3> this[T1 key]
+        {
+            get
+            {
+                if (!ContainsKey(key))
+                    Add(key, new Dictionary<T2, T3>());
+
+                Dictionary<T2, T3> returnObj;
+                TryGetValue(key, out returnObj);
+
+                return returnObj;
+            }
         }
     }
 }
