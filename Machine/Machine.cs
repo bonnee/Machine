@@ -1,7 +1,6 @@
-﻿using System;
+﻿﻿sing System;
 using System.Collections.Generic;
 using System.Threading;
-using Machine;
 
 namespace Machine
 {
@@ -58,7 +57,7 @@ namespace Machine
             this.mem = new Memory<char>(mem, '_');
         }
 
-        public Instance(List<char> mem, string prog) : this(mem)
+        public Instance(List<char> mem, string[] prog) : this(mem)
         {
             code = new Code(prog);
         }
@@ -75,7 +74,8 @@ namespace Machine
         {
             state = s;
             string[] command;
-            while (state != "halt")
+            while (state != "halt" +
+                   "")
             {
                 command = code.Match(state, mem.Read().ToString());
 
@@ -119,4 +119,3 @@ namespace Machine
         }
     }
 }
-

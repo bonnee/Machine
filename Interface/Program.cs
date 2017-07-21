@@ -36,8 +36,9 @@ namespace Interface
                 return;
             }
 
-            m = new Instance(new List<char>(mem), File.ReadAllText(args[0]));
-            m.Cycle += cycle;
+            m = new Instance(new List<char>(mem), File.ReadAllLines(args[0]));
+            //m.Cycle += cycle;
+            m.Finish += cycle;
 
             Run(delay);
         }

@@ -8,11 +8,9 @@ namespace Machine
     public class Code
     {
         private CodeMatch<string, string, string[]> lines;
-        //private List<string[]> lines;
 
         public Code(string[] program)
         {
-            //lines = new List<string[]>();
             lines = new CodeMatch<string, string, string[]>();
 
             for (int i = 0; i < program.Length; i++)
