@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Machine.cs" />
+    <Content Include="Program.cs" />
+    <Content Include="Code.cs" />
     <Content Include="Memory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

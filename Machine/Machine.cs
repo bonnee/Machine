@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Machine;
 
 namespace Machine
 {
-    public class Machine
+    public class Instance
     {
-        private Memory<char> memory;
+        private Memory<char> mem;
+        public Memory<char> memory
+        {
+            get
+            {
+                return mem;
+            }
+        }
 
-        private List<string[]> Program { get; set; }
+        private Code code;
 
         public string state { get; set; }
 
@@ -41,29 +49,21 @@ namespace Machine
 
         #region Constructors
 
-        public Machine(List<char> mem)
+        public Instance()
         {
-            memory = new Memory<char>(mem, '_');
+
+        }
+        public Instance(List<char> mem)
+        {
+            this.mem = new Memory<char>(mem, '_');
         }
 
-        public Machine(List<char> mem, List<string[]> program) : this(mem)
+        public Instance(List<char> mem, string prog) : this(mem)
         {
-            Program = program;
+            code = new Code(prog);
         }
 
         #endregion
-
-        /// <summary>
-        /// Sets the content of the program to be executed
-        /// </summary>
-        /// <param name="program">Program.</param>
-        public void SetProgram(List<string> program)
-        {
-            Program = new List<string[]>();
-            foreach (string line in program)
-                Program.Add(line.Split(' '));
-        }
-
         #region Runtime
 
         /// <summary>
@@ -77,53 +77,32 @@ namespace Machine
             string[] command;
             while (state != "halt")
             {
-                command = GetCommand();
+                command = code.Match(state, mem.Read().ToString());
 
-                if (command[1] == "*" || memory.Read() == Convert.ToChar(command[1]))
+                //if (command[1] == "*" || mem.Read() == Convert.ToChar(command[1]))
                 {
                     if (command[2] != "*")
-                        memory.Write(Convert.ToChar(command[2]));
+                        mem.Write(Convert.ToChar(command[2]));
                     if (command[3] == "r")
-                        memory.moveRight();
+                        mem.MoveRight();
                     else if (command[3] == "l")
-                        memory.moveLeft();
+                        mem.MoveLeft();
 
                     state = command[4];
                 }
-                OnCycle(new MachineEventArgs(memory, state, index, count));
+                OnCycle(new MachineEventArgs(mem, state, mem.Index, count));
                 count++;
                 if (delay > 0)
                     Thread.Sleep(delay);
             }
-            OnFinish(new MachineEventArgs(memory, state, index, count));
+            OnFinish(new MachineEventArgs(mem, state, mem.Index, count));
         }
-
-        // Declare GetCommand's variables outside the method to improve performance
-        Dictionary<string, string[]> commands = new Dictionary<string, string[]>();
-        string[] outp;
-        /// <summary>
-        /// Gets the command to be executed between all the commands of the current state
-        /// </summary>
-        /// <returns>The command to execute</returns>
-        string[] GetCommand()
-        {
-            commands.Clear();
-
-            foreach (string[] cmd in Program)
-                if (cmd[0] == state)
-                    commands.Add(cmd[1], cmd);
-
-            if (!commands.TryGetValue(memory.Read().ToString(), out outp))
-                return commands["*"];
-            return outp;
-        }
-
         #endregion
     }
 
     public class MachineEventArgs : EventArgs
     {
-        public char[] Memory { get; set; }
+        public Memory<char> memory { get; set; }
 
         public string State { get; set; }
 
@@ -131,9 +110,9 @@ namespace Machine
 
         public int Count { get; set; }
 
-        public MachineEventArgs(char[] memory, string state, int index, int count)
+        public MachineEventArgs(Memory<char> mem, string state, int index, int count)
         {
-            Memory = memory;
+            memory = mem;
             State = state;
             Index = index;
             Count = count;
