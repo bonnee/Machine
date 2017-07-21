@@ -52,7 +52,7 @@ namespace Interface
             s.Stop();
 
             Console.WriteLine("Done.");
-            Print(m.memory.ToArray(), m.count, s.Elapsed);
+            Print(m.memory.ToArray(), 0, m.count, s.Elapsed);
         }
 
         static void Help()
@@ -60,7 +60,7 @@ namespace Interface
             Console.WriteLine("Provide some parameters.");
         }
 
-        static void Print(char[] memory, int count, TimeSpan elapsed)
+        static void Print(char[] memory, int index, int count, TimeSpan elapsed)
         {
             foreach (char c in memory)
                 Console.Write(c);
@@ -69,7 +69,7 @@ namespace Interface
 
         static void cycle(object sender, Machine.MachineEventArgs e)
         {
-            Print(e.memory.ToArray(), e.Count, new TimeSpan(0));
+            Print(e.memory.ToArray(), e.Index, e.Count, new TimeSpan(0));
         }
     }
 }

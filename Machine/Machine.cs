@@ -74,22 +74,19 @@ namespace Machine
         {
             state = s;
             string[] command;
-            while (state != "halt" +
-                   "")
+            while (state != "halt")
             {
                 command = code.Match(state, mem.Read().ToString());
 
-                //if (command[1] == "*" || mem.Read() == Convert.ToChar(command[1]))
-                {
-                    if (command[2] != "*")
-                        mem.Write(Convert.ToChar(command[2]));
-                    if (command[3] == "r")
-                        mem.MoveRight();
-                    else if (command[3] == "l")
-                        mem.MoveLeft();
+                if (command[0] != "*")
+                    mem.Write(Convert.ToChar(command[0]));
+                if (command[1] == "r")
+                    mem.MoveRight();
+                else if (command[1] == "l")
+                    mem.MoveLeft();
 
-                    state = command[4];
-                }
+                state = command[2];
+
                 OnCycle(new MachineEventArgs(mem, state, mem.Index, count));
                 count++;
                 if (delay > 0)

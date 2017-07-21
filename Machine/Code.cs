@@ -23,7 +23,7 @@ namespace Machine
                         lines.Add(tmp[0], new Dictionary<string, string[]>());
                     }
 
-                    lines[tmp[0]].Add(tmp[1], tmp);
+                    lines[tmp[0]].Add(tmp[1], tmp.Skip(2).ToArray());
                 }
             }
         }
