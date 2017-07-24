@@ -17,9 +17,11 @@ namespace Machine
 
         private Code code;
 
-        public string state { get; set; }
+        private string state;
+        public string State { get; }
 
-        public int count = 0;
+        private int count;
+        public int Count { get; }
 
         /// <summary>
         /// Raises the cycle event.
@@ -48,10 +50,6 @@ namespace Machine
 
         #region Constructors
 
-        public Instance()
-        {
-
-        }
         public Instance(List<char> mem)
         {
             this.mem = new Memory<char>(mem, '_');
@@ -66,13 +64,21 @@ namespace Machine
         #region Runtime
 
         /// <summary>
-        /// Starts the turing machine
+        /// Starts the computation
         /// </summary>
-        /// <param name="s">The initial state</param>
-        /// <param name="delay">The delay to apply to each cycle of the machine</param>
-        public void Run(string s, int delay = 0)
+        public void Run()
         {
-            state = s;
+            Run("0", 0);
+        }
+
+        /// <summary>
+        /// Starts the computation
+        /// </summary>
+        /// <param name="state">The starting program state</param>
+        /// <param name="delay">The delay to apply to each cycle of the machine</param>
+        public void Run(string state, int delay = 0)
+        {
+            this.state = state;
             string[] command;
             while (state != "halt")
             {
@@ -80,6 +86,7 @@ namespace Machine
 
                 if (command[0] != "*")
                     mem.Write(Convert.ToChar(command[0]));
+
                 if (command[1] == "r")
                     mem.MoveRight();
                 else if (command[1] == "l")

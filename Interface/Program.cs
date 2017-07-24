@@ -18,8 +18,7 @@ namespace Interface
 
             if (args.Length == 0)
             {
-                Console.WriteLine("Error: no arguments provided.");
-                return;
+                throw new ArgumentException("No arguments provided.");
             }
             else if (args.Length == 2)
             {
@@ -32,10 +31,10 @@ namespace Interface
 
             if (!File.Exists(args[0]))
             {
-                Console.WriteLine("Error: file doesn't exist.");
-                return;
+                throw new FileNotFoundException(args[0]);
             }
 
+            Console.Write("Loading...");
             m = new Instance(new List<char>(mem), File.ReadAllLines(args[0]));
             //m.Cycle += cycle;
             m.Finish += cycle;
@@ -52,7 +51,7 @@ namespace Interface
             s.Stop();
 
             Console.WriteLine("Done.");
-            Print(m.memory.ToArray(), 0, m.count, s.Elapsed);
+            Print(m.memory.ToArray(), 0, m.Count, s.Elapsed);
         }
 
         static void Help()

@@ -14,13 +14,18 @@ namespace Machine
                 return index;
             }
         }
-        private T defaultState;
+        private T empty;
 
-        public Memory(ICollection<T> mem, T defState)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="memory">The initial memory state</param>
+        /// <param name="emptyCell">The empty cell state. Used when expanding memory</param>
+        public Memory(List<T> memory, T emptyCell)
         {
             index = 0;
-            defaultState = defState;
-            cells = new List<T>(mem);
+            empty = emptyCell;
+            cells = new List<T>(memory);
         }
 
         /// <summary>
@@ -30,7 +35,7 @@ namespace Machine
         public T MoveRight()
         {
             if (index == cells.Count - 1)
-                cells.Add(defaultState);
+                cells.Add(empty);
 
             return cells[++index];
         }
@@ -42,7 +47,7 @@ namespace Machine
         public T MoveLeft()
         {
             if (index == 0)
-                cells.Insert(0, defaultState);
+                cells.Insert(0, empty);
             else
                 index--;
 
