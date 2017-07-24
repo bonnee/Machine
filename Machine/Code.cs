@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace Machine
 {
-	public class Code
+    public class Code
     {
         private CodeMatch<string, string, string[]> lines;
 
-        private string comment = "#";
+        private string comment = ";";
 
         /// <param name="program">The code splitted by lines</param>
         public Code(string[] program)
