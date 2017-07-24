@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Machine
+namespace Emulator
 {
-	public class Memory<T>
+    public class Memory<T>
     {
         private List<T> cells;
         private int index;

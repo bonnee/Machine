@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Interface
+namespace Emulator
 {
-	class MainClass
+    class MainClass
     {
-        static Machine.Machine m;
-
+        static Machine m;
+        static Stopwatch s = new Stopwatch();
         public static void Main(string[] args)
         {
             string mem = "_";
@@ -34,23 +34,22 @@ namespace Interface
             }
 
             Console.Write("Loading...");
-            m = new Machine.Machine(new List<char>(mem), File.ReadAllLines(args[0]));
+            m = new Machine(new List<char>(mem), File.ReadAllLines(args[0]));
             //m.Cycle += cycle;
             m.Finish += cycle;
 
             Run(delay);
         }
 
-        static void Run(int delay = 0)
+        static void Run(int delay)
         {
             Console.Write("Computing...");
-            Stopwatch s = new Stopwatch();
+
             s.Start();
             m.Run("0", delay);
             s.Stop();
 
             Console.WriteLine("Done.");
-            Print(m.Memory.ToArray(), 0, m.Count, s.Elapsed);
         }
 
         static void Help()
@@ -58,16 +57,17 @@ namespace Interface
             Console.WriteLine("Provide some parameters.");
         }
 
-        static void Print(char[] memory, int index, int count, TimeSpan elapsed)
+        static void Print(Memory<char> memory, int cycles, TimeSpan elapsed)
         {
-            foreach (char c in memory)
+            Console.WriteLine();
+            foreach (char c in memory.ToArray())
                 Console.Write(c);
-            Console.WriteLine("\n\nCount: " + count + " Elapsed: " + elapsed.ToString());
+            Console.WriteLine("\n\nCycles: " + cycles + " Elapsed: " + elapsed.ToString() + " Op/s: " + cycles / (elapsed.TotalMilliseconds / 1000));
         }
 
-        static void cycle(object sender, Machine.MachineEventArgs e)
+        static void cycle(object sender, MachineEventArgs e)
         {
-            Print(e.Memory.ToArray(), e.Index, e.Count, new TimeSpan(0));
+            Print(e.Memory, e.Cycles, s.Elapsed);
         }
     }
 }

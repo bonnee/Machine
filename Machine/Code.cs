@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Machine
+namespace Emulator
 {
     public class Code
     {
@@ -55,7 +55,14 @@ namespace Machine
             {
                 if (!right.TryGetValue(cell, out cmd))
                 {
-                    return right["*"];
+                    try
+                    {
+                        return right["*"];
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        throw new KeyNotFoundException("Match not found in state '" + state + "' for cell '" + cell + "'");
+                    }
                 }
             }
             else

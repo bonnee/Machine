@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Machine
+namespace Emulator
 {
     public class Machine
     {
@@ -14,8 +14,8 @@ namespace Machine
         private string state;
         public string State { get { return state; } }
 
-        private int count;
-        public int Count { get { return count; } }
+        private int cycles;
+        public int Cycles { get { return cycles; } }
 
         protected virtual void OnCycle(MachineEventArgs e)
         {
@@ -56,23 +56,23 @@ namespace Machine
         /// <summary>
         /// Starts the computation
         /// </summary>
-        public void Run()
-        {
-            Run("0", 0);
-        }
-
-        /// <summary>
-        /// Starts the computation
-        /// </summary>
         /// <param name="state">The starting program state</param>
         /// <param name="delay">The delay to apply to each cycle of the machine</param>
-        public void Run(string state, int delay = 0)
+        public void Run(string state = "*", int delay = 0)
         {
             this.state = state;
             string[] command;
             while (state != "halt")
             {
-                command = code.Match(state, memory.Read().ToString());
+                try
+                {
+                    command = code.Match(state, memory.Read().ToString());
+                }
+                catch (KeyNotFoundException e)
+                {
+                    Console.Error.WriteLine(e.Message);
+                    break;
+                }
 
                 if (command[0] != "*")
                     memory.Write(Convert.ToChar(command[0]));
@@ -84,12 +84,13 @@ namespace Machine
 
                 state = command[2];
 
-                OnCycle(new MachineEventArgs(memory, state, memory.Index, count));
-                count++;
+                OnCycle(new MachineEventArgs(memory, state, cycles));
+                cycles++;
+
                 if (delay > 0)
                     Thread.Sleep(delay);
             }
-            OnFinish(new MachineEventArgs(memory, state, memory.Index, count));
+            OnFinish(new MachineEventArgs(memory, state, cycles));
         }
         #endregion
     }
@@ -102,18 +103,14 @@ namespace Machine
         private string state;
         public string State { get { return state; } }
 
-        private int index;
-        public int Index { get { return index; } }
+        private int cycles;
+        public int Cycles { get { return cycles; } }
 
-        private int count;
-        public int Count { get { return count; } }
-
-        public MachineEventArgs(Memory<char> memory, string state, int index, int count)
+        public MachineEventArgs(Memory<char> memory, string state, int cycles)
         {
             this.memory = memory;
             this.state = state;
-            this.index = index;
-            this.count = count;
+            this.cycles = cycles;
         }
     }
 }
