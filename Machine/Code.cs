@@ -15,15 +15,18 @@ namespace Machine
 
             for (int i = 0; i < program.Length; i++)
             {
-                string[] tmp = program[i].Split(' ');
-                if (tmp.Length == 5)
+                if (!program[i].StartsWith("#"))
                 {
-                    if (!lines.ContainsKey(tmp[0]))
+                    string[] tmp = program[i].Split(' ');
+                    if (tmp.Length == 5)
                     {
-                        lines.Add(tmp[0], new Dictionary<string, string[]>());
-                    }
+                        if (!lines.ContainsKey(tmp[0]))
+                        {
+                            lines.Add(tmp[0], new Dictionary<string, string[]>());
+                        }
 
-                    lines[tmp[0]].Add(tmp[1], tmp.Skip(2).ToArray());
+                        lines[tmp[0]].Add(tmp[1], tmp.Skip(2).ToArray());
+                    }
                 }
             }
         }
@@ -48,7 +51,7 @@ namespace Machine
             }
             else
             {
-                throw new Exception();
+                throw new Exception("Match not found in program on state: " + state);
             }
 
             return cmd;
