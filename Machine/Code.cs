@@ -55,7 +55,9 @@ namespace Machine
         }
     }
 
-
+    /// <summary>
+    /// Implements a 2 key dictionary
+    /// </summary>
     public class CodeMatch<T1, T2, T3> : Dictionary<T1, Dictionary<T2, T3>>
     {
         new public Dictionary<T2, T3> this[T1 key]

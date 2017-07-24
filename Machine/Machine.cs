@@ -99,7 +99,7 @@ namespace Machine
 
     public class MachineEventArgs : EventArgs
     {
-        public Memory<char> memory { get; set; }
+        public Memory<char> Memory { get; set; }
 
         public string State { get; set; }
 
@@ -107,9 +107,9 @@ namespace Machine
 
         public int Count { get; set; }
 
-        public MachineEventArgs(Memory<char> mem, string state, int index, int count)
+        public MachineEventArgs(Memory<char> memory, string state, int index, int count)
         {
-            memory = mem;
+            Memory = memory;
             State = state;
             Index = index;
             Count = count;
