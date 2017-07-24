@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Machine;
 
 namespace Interface
 {
-    class MainClass
+	class MainClass
     {
-        static Instance m;
+        static Machine.Machine m;
 
         public static void Main(string[] args)
         {
@@ -35,7 +34,7 @@ namespace Interface
             }
 
             Console.Write("Loading...");
-            m = new Instance(new List<char>(mem), File.ReadAllLines(args[0]));
+            m = new Machine.Machine(new List<char>(mem), File.ReadAllLines(args[0]));
             //m.Cycle += cycle;
             m.Finish += cycle;
 
@@ -51,7 +50,7 @@ namespace Interface
             s.Stop();
 
             Console.WriteLine("Done.");
-            Print(m.memory.ToArray(), 0, m.Count, s.Elapsed);
+            Print(m.Memory.ToArray(), 0, m.Count, s.Elapsed);
         }
 
         static void Help()
@@ -68,7 +67,7 @@ namespace Interface
 
         static void cycle(object sender, Machine.MachineEventArgs e)
         {
-            Print(e.memory.ToArray(), e.Index, e.Count, new TimeSpan(0));
+            Print(e.Memory.ToArray(), e.Index, e.Count, new TimeSpan(0));
         }
     }
 }

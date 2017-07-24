@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Machine
 {
-    public class Memory<T>
+	public class Memory<T>
     {
         private List<T> cells;
         private int index;
@@ -16,9 +15,6 @@ namespace Machine
         }
         private T empty;
 
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="memory">The initial memory state</param>
         /// <param name="emptyCell">The empty cell state. Used when expanding memory</param>
         public Memory(List<T> memory, T emptyCell)
@@ -54,19 +50,11 @@ namespace Machine
             return Read();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>The current cell</returns>
         public T Read()
         {
             return cells[index];
         }
 
-        /// <summary>
-        /// Writes to the current cell
-        /// </summary>
-        /// <param name="item">The new cell value</param>
         public void Write(T item)
         {
             cells[index] = item;

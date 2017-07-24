@@ -1,21 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Machine;
 
 namespace Machine
 {
-    public class Code
+	public class Code
     {
         private CodeMatch<string, string, string[]> lines;
 
+        private string comment = "#";
+
+        /// <param name="program">The code splitted by lines</param>
         public Code(string[] program)
         {
             lines = new CodeMatch<string, string, string[]>();
 
             for (int i = 0; i < program.Length; i++)
             {
-                if (!program[i].StartsWith("#"))
+                if (!program[i].StartsWith(comment))
                 {
                     string[] tmp = program[i].Split(' ');
                     if (tmp.Length == 5)
@@ -31,10 +33,17 @@ namespace Machine
             }
         }
 
+        /// <param name="program">The code splitted by lines</param>
+        /// <param name="comment">The comment delimiter to use</param>
+        public Code(string[] program, string comment) : this(program)
+        {
+            this.comment = comment;
+        }
+
         /// <summary>
         /// Matches the right command line to the actual program state
         /// </summary>
-        /// <param name="state">The actual program state</param>
+        /// <param name="state">The program state to match</param>
         /// <param name="cell">The indexed memory cell</param>
         /// <returns>The right command line</returns>
         public string[] Match(string state, string cell)
@@ -51,7 +60,7 @@ namespace Machine
             }
             else
             {
-                throw new Exception("Match not found in program on state: " + state);
+                throw new KeyNotFoundException("Match not found in state '" + state + "' for cell '" + cell + "'");
             }
 
             return cmd;
@@ -59,18 +68,18 @@ namespace Machine
     }
 
     /// <summary>
-    /// Implements a 2 key dictionary
+    /// A two-key dictionary
     /// </summary>
-    public class CodeMatch<T1, T2, T3> : Dictionary<T1, Dictionary<T2, T3>>
+    public class CodeMatch<K1, K2, V1> : Dictionary<K1, Dictionary<K2, V1>>
     {
-        new public Dictionary<T2, T3> this[T1 key]
+        new public Dictionary<K2, V1> this[K1 key]
         {
             get
             {
                 if (!ContainsKey(key))
-                    Add(key, new Dictionary<T2, T3>());
+                    Add(key, new Dictionary<K2, V1>());
 
-                Dictionary<T2, T3> returnObj;
+                Dictionary<K2, V1> returnObj;
                 TryGetValue(key, out returnObj);
 
                 return returnObj;

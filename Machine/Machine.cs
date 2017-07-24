@@ -4,29 +4,19 @@ using System.Threading;
 
 namespace Machine
 {
-    public class Instance
+    public class Machine
     {
-        private Memory<char> mem;
-        public Memory<char> memory
-        {
-            get
-            {
-                return mem;
-            }
-        }
-
         private Code code;
 
+        private Memory<char> memory;
+        public Memory<char> Memory { get { return memory; } }
+
         private string state;
-        public string State { get; }
+        public string State { get { return state; } }
 
         private int count;
-        public int Count { get; }
+        public int Count { get { return count; } }
 
-        /// <summary>
-        /// Raises the cycle event.
-        /// </summary>
-        /// <param name="e">The event args</param>
         protected virtual void OnCycle(MachineEventArgs e)
         {
             EventHandler<MachineEventArgs> ev = Cycle;
@@ -50,12 +40,12 @@ namespace Machine
 
         #region Constructors
 
-        public Instance(List<char> mem)
+        public Machine(List<char> memory)
         {
-            this.mem = new Memory<char>(mem, '_');
+            this.memory = new Memory<char>(memory, '_');
         }
 
-        public Instance(List<char> mem, string[] prog) : this(mem)
+        public Machine(List<char> memory, string[] prog) : this(memory)
         {
             code = new Code(prog);
         }
@@ -82,44 +72,48 @@ namespace Machine
             string[] command;
             while (state != "halt")
             {
-                command = code.Match(state, mem.Read().ToString());
+                command = code.Match(state, memory.Read().ToString());
 
                 if (command[0] != "*")
-                    mem.Write(Convert.ToChar(command[0]));
+                    memory.Write(Convert.ToChar(command[0]));
 
                 if (command[1] == "r")
-                    mem.MoveRight();
+                    memory.MoveRight();
                 else if (command[1] == "l")
-                    mem.MoveLeft();
+                    memory.MoveLeft();
 
                 state = command[2];
 
-                OnCycle(new MachineEventArgs(mem, state, mem.Index, count));
+                OnCycle(new MachineEventArgs(memory, state, memory.Index, count));
                 count++;
                 if (delay > 0)
                     Thread.Sleep(delay);
             }
-            OnFinish(new MachineEventArgs(mem, state, mem.Index, count));
+            OnFinish(new MachineEventArgs(memory, state, memory.Index, count));
         }
         #endregion
     }
 
     public class MachineEventArgs : EventArgs
     {
-        public Memory<char> Memory { get; set; }
+        private Memory<char> memory;
+        public Memory<char> Memory { get { return memory; } }
 
-        public string State { get; set; }
+        private string state;
+        public string State { get { return state; } }
 
-        public int Index { get; set; }
+        private int index;
+        public int Index { get { return index; } }
 
-        public int Count { get; set; }
+        private int count;
+        public int Count { get { return count; } }
 
         public MachineEventArgs(Memory<char> memory, string state, int index, int count)
         {
-            Memory = memory;
-            State = state;
-            Index = index;
-            Count = count;
+            this.memory = memory;
+            this.state = state;
+            this.index = index;
+            this.count = count;
         }
     }
 }
