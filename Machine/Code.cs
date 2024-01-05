@@ -48,10 +48,14 @@ namespace Emulator
         /// <returns>The right command line</returns>
         public string[] Match(string state, string cell)
         {
-            Dictionary<string, string[]> right;
-            String[] cmd;
+            string[] cmd;
 
-            if (lines.TryGetValue(state, out right))
+            if (cell == " ")
+            {
+                cell = "_";
+            }
+
+            if (lines.TryGetValue(state, out var right))
             {
                 if (!right.TryGetValue(cell, out cmd))
                 {

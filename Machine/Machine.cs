@@ -75,7 +75,7 @@ namespace Emulator
                 }
 
                 if (command[0] != "*")
-                    memory.Write(Convert.ToChar(command[0]));
+                    memory.Write(Convert.ToChar(command[0] == "_" ? " " : command[0]));
 
                 if (command[1] == "r")
                     memory.MoveRight();
