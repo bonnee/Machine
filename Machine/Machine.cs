@@ -6,16 +6,9 @@ namespace Emulator
 {
     public class Machine
     {
-        private Code code;
-
-        private Memory<char> memory;
-        public Memory<char> Memory { get { return memory; } }
-
-        private string state;
-        public string State { get { return state; } }
-
+        private readonly Code code;
+        private readonly Memory<char> memory;
         private int cycles;
-        public int Cycles { get { return cycles; } }
 
         protected virtual void OnCycle(MachineEventArgs e)
         {
@@ -36,9 +29,8 @@ namespace Emulator
             if (ev != null)
                 ev(this, e);
         }
-        public event EventHandler<MachineEventArgs> Finish;
 
-        #region Constructors
+        public event EventHandler<MachineEventArgs> Finish;
 
         public Machine(List<char> memory)
         {
@@ -50,9 +42,6 @@ namespace Emulator
             code = new Code(prog);
         }
 
-        #endregion
-        #region Runtime
-
         /// <summary>
         /// Starts the computation
         /// </summary>
@@ -60,7 +49,6 @@ namespace Emulator
         /// <param name="delay">The delay to apply to each cycle of the machine</param>
         public void Run(string state = "*", int delay = 0)
         {
-            this.state = state;
             string[] command;
             while (state != "halt")
             {
@@ -92,25 +80,21 @@ namespace Emulator
             }
             OnFinish(new MachineEventArgs(memory, state, cycles));
         }
-        #endregion
     }
 
     public class MachineEventArgs : EventArgs
     {
-        private Memory<char> memory;
-        public Memory<char> Memory { get { return memory; } }
+        public Memory<char> Memory { get; }
 
-        private string state;
-        public string State { get { return state; } }
+        public string State { get; }
 
-        private int cycles;
-        public int Cycles { get { return cycles; } }
+        public int Cycles { get; }
 
         public MachineEventArgs(Memory<char> memory, string state, int cycles)
         {
-            this.memory = memory;
-            this.state = state;
-            this.cycles = cycles;
+            this.Memory = memory;
+            this.State = state;
+            this.Cycles = cycles;
         }
     }
 }

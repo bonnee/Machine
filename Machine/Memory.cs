@@ -4,16 +4,9 @@ namespace Emulator
 {
     public class Memory<T>
     {
-        private List<T> cells;
+        private readonly List<T> cells;
         private int index;
-        public int Index
-        {
-            get
-            {
-                return index;
-            }
-        }
-        private T empty;
+        private readonly T empty;
 
         /// <param name="memory">The initial memory state</param>
         /// <param name="emptyCell">The empty cell state. Used when expanding memory</param>

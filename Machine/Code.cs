@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,30 +5,29 @@ namespace Emulator
 {
     public class Code
     {
-        private CodeMatch<string, string, string[]> lines;
-
-        private string comment = ";";
+        private readonly CodeMatch<string, string, string[]> lines;
+        private readonly string comment = ";";
 
         /// <param name="program">The code splitted by lines</param>
         public Code(string[] program)
         {
             lines = new CodeMatch<string, string, string[]>();
 
-            for (int i = 0; i < program.Length; i++)
+            foreach(var line in program)
             {
-                if (!program[i].StartsWith(comment))
-                {
-                    string[] tmp = program[i].Split(' ');
-                    if (tmp.Length == 5)
-                    {
-                        if (!lines.ContainsKey(tmp[0]))
-                        {
-                            lines.Add(tmp[0], new Dictionary<string, string[]>());
-                        }
+                if (line.StartsWith(comment)) 
+                    continue;
 
-                        lines[tmp[0]].Add(tmp[1], tmp.Skip(2).ToArray());
-                    }
+                var tmp = line.Split(' ');
+                if (tmp.Length != 5) 
+                    continue;
+
+                if (!lines.ContainsKey(tmp[0]))
+                {
+                    lines.Add(tmp[0], new Dictionary<string, string[]>());
                 }
+
+                lines[tmp[0]].Add(tmp[1], tmp.Skip(2).ToArray());
             }
         }
 
@@ -48,33 +46,25 @@ namespace Emulator
         /// <returns>The right command line</returns>
         public string[] Match(string state, string cell)
         {
-            string[] cmd;
-
             if (cell == " ")
             {
                 cell = "_";
             }
 
-            if (lines.TryGetValue(state, out var right))
+            if (!lines.TryGetValue(state, out var right))
+                throw new KeyNotFoundException("Match not found in state '" + state + "' for cell '" + cell + "'");
+
+            if (right.TryGetValue(cell, out var cmd)) 
+                return cmd;
+
+            try
             {
-                if (!right.TryGetValue(cell, out cmd))
-                {
-                    try
-                    {
-                        return right["*"];
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        throw new KeyNotFoundException("Match not found in state '" + state + "' for cell '" + cell + "'");
-                    }
-                }
+                return right["*"];
             }
-            else
+            catch (KeyNotFoundException)
             {
                 throw new KeyNotFoundException("Match not found in state '" + state + "' for cell '" + cell + "'");
             }
-
-            return cmd;
         }
     }
 
@@ -83,15 +73,14 @@ namespace Emulator
     /// </summary>
     public class CodeMatch<K1, K2, V1> : Dictionary<K1, Dictionary<K2, V1>>
     {
-        new public Dictionary<K2, V1> this[K1 key]
+        public new Dictionary<K2, V1> this[K1 key]
         {
             get
             {
                 if (!ContainsKey(key))
                     Add(key, new Dictionary<K2, V1>());
 
-                Dictionary<K2, V1> returnObj;
-                TryGetValue(key, out returnObj);
+                TryGetValue(key, out var returnObj);
 
                 return returnObj;
             }

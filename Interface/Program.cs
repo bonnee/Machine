@@ -5,27 +5,19 @@ using System.IO;
 
 namespace Emulator
 {
-    class MainClass
+    internal class MainClass
     {
-        static Machine m;
-        static Stopwatch s = new Stopwatch();
+        private static Machine m;
+        private static readonly Stopwatch s = new Stopwatch();
+
         public static void Main(string[] args)
         {
-            string mem = "_";
-
-            int delay = 0;
+            var mem = "_";
+            var delay = 0;
 
             if (args.Length == 0)
             {
                 throw new ArgumentException("No arguments provided.");
-            }
-            else if (args.Length == 2)
-            {
-                mem = args[1];
-            }
-            if (args.Length == 3)
-            {
-                delay = Convert.ToInt32(args[2]);
             }
 
             if (!File.Exists(args[0]))
@@ -33,15 +25,26 @@ namespace Emulator
                 throw new FileNotFoundException(args[0]);
             }
 
+            switch (args.Length)
+            {
+                case 2:
+                    mem = args[1];
+                    break;
+                case 3:
+                    delay = Convert.ToInt32(args[2]);
+                    break;
+            }
+
             Console.Write("Loading...");
+
             m = new Machine(new List<char>(mem), File.ReadAllLines(args[0]));
-            //m.Cycle += cycle;
-            m.Finish += cycle;
+            //m.Cycle += OnCycle;
+            m.Finish += OnFinish;
 
             Run(delay);
         }
 
-        static void Run(int delay)
+        private static void Run(int delay)
         {
             Console.Write("Computing...");
 
@@ -52,20 +55,22 @@ namespace Emulator
             Console.WriteLine("Done.");
         }
 
-        static void Help()
-        {
-            Console.WriteLine("Provide some parameters.");
-        }
-
-        static void Print(Memory<char> memory, int cycles, TimeSpan elapsed)
+        private static void Print(Memory<char> memory, int cycles, TimeSpan elapsed)
         {
             Console.WriteLine();
-            foreach (char c in memory.ToArray())
+
+            foreach (var c in memory.ToArray())
                 Console.Write(c);
-            Console.WriteLine("\n\nCycles: " + cycles + " Elapsed: " + elapsed.ToString() + " Op/s: " + cycles / (elapsed.TotalMilliseconds / 1000));
+
+            Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}Cycles: {cycles}, Elapsed: {elapsed}, Op/s: {cycles}/{elapsed.TotalMilliseconds / 1000}ms");
         }
 
-        static void cycle(object sender, MachineEventArgs e)
+        private static void OnFinish(object sender, MachineEventArgs e)
+        {
+            Print(e.Memory, e.Cycles, s.Elapsed);
+        }
+
+        private static void OnCycle(object sender, MachineEventArgs e)
         {
             Print(e.Memory, e.Cycles, s.Elapsed);
         }
