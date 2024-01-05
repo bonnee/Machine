@@ -1,63 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine", "Machine\Machine.csproj", "{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interface", "Interface\Interface.csproj", "{53315B78-9590-4D67-894C-ABD59B984215}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "Interface\Interface.csproj", "{DE113006-89E8-4547-B195-735EC9CCE6F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine", "Machine\Machine.csproj", "{A703061A-2278-44C2-96BE-45358C2DF6B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
-		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}.Debug|x64.ActiveCfg = Debug|x64
-		{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}.Debug|x64.Build.0 = Debug|x64
-		{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}.Release|x64.ActiveCfg = Release|x64
-		{7BB06C03-3771-4FFE-BB95-B86BF409F6B6}.Release|x64.Build.0 = Release|x64
-		{DE113006-89E8-4547-B195-735EC9CCE6F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE113006-89E8-4547-B195-735EC9CCE6F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE113006-89E8-4547-B195-735EC9CCE6F2}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{DE113006-89E8-4547-B195-735EC9CCE6F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE113006-89E8-4547-B195-735EC9CCE6F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE113006-89E8-4547-B195-735EC9CCE6F2}.Release|x64.ActiveCfg = Release|x64
-		{DE113006-89E8-4547-B195-735EC9CCE6F2}.Release|x64.Build.0 = Release|x64
-		{DE113006-89E8-4547-B195-735EC9CCE6F2}.Debug|x64.Build.0 = Debug|Any CPU
+		{53315B78-9590-4D67-894C-ABD59B984215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53315B78-9590-4D67-894C-ABD59B984215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53315B78-9590-4D67-894C-ABD59B984215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53315B78-9590-4D67-894C-ABD59B984215}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A703061A-2278-44C2-96BE-45358C2DF6B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A703061A-2278-44C2-96BE-45358C2DF6B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A703061A-2278-44C2-96BE-45358C2DF6B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A703061A-2278-44C2-96BE-45358C2DF6B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		Policies = $0
-		$0.DotNetNamingPolicy = $1
-		$1.DirectoryNamespaceAssociation = None
-		$1.ResourceNamePolicy = FileFormatDefault
-		$0.VersionControlPolicy = $2
-		$2.inheritsSet = Mono
-		$0.StandardHeader = $3
-		$3.Text = @ \n ${FileName}\n \n Author:\n      ${AuthorName} <${AuthorEmail}>\n\n Copyright (c) ${Year} ${CopyrightHolder}\n\n This program is free software: you can redistribute it and/or modify\n it under the terms of the GNU General Public License as published by\n the Free Software Foundation, either version 3 of the License, or\n (at your option) any later version.\n\n This program is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of\n MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n GNU General Public License for more details.\n\n You should have received a copy of the GNU General Public License\n along with this program.  If not, see <http://www.gnu.org/licenses/>.
-		$3.IncludeInNewFiles = True
-		$0.NameConventionPolicy = $4
-		$4.Rules = $5
-		$5.NamingRule = $6
-		$6.Name = Type Parameters
-		$6.AffectedEntity = TypeParameter
-		$6.VisibilityMask = VisibilityMask
-		$6.NamingStyle = PascalCase
-		$6.IncludeInstanceMembers = True
-		$6.IncludeStaticEntities = True
-		$6.RequiredPrefixes = $7
-		$7.String = T
-		$6.RequiredSuffixes = $8
-		$8.String = Exception
-		version = 1
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B00761EA-6485-4E22-BC86-0AEC2E490DAA}
 	EndGlobalSection
 EndGlobal

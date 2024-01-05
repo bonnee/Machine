@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Interface": {
+      "commandName": "Project",
+      "commandLineArgs": "Examples\\binsum.tm \"10000 00001\""
+    }
+  }
+}

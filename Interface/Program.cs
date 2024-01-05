@@ -1,16 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 
 namespace Emulator
 {
     internal class MainClass
     {
         private static Machine m;
-        private static readonly Stopwatch s = new Stopwatch();
+        private static readonly Stopwatch s = new();
 
         public static void Main(string[] args)
+        {
+            var (mem, delay) = ParseArgs(args);
+
+            Console.WriteLine("Loading...");
+
+            m = new Machine(new List<char>(mem), File.ReadAllLines(args[0]));
+            //m.Cycle += OnCycle;
+            m.Finish += OnFinish;
+
+            Run(delay);
+        }
+
+        private static (string, int) ParseArgs(string[] args)
         {
             var mem = "_";
             var delay = 0;
@@ -35,18 +45,12 @@ namespace Emulator
                     break;
             }
 
-            Console.Write("Loading...");
-
-            m = new Machine(new List<char>(mem), File.ReadAllLines(args[0]));
-            //m.Cycle += OnCycle;
-            m.Finish += OnFinish;
-
-            Run(delay);
+            return (mem, delay);
         }
 
         private static void Run(int delay)
         {
-            Console.Write("Computing...");
+            Console.WriteLine("Computing...");
 
             s.Start();
             m.Run("0", delay);
@@ -62,7 +66,7 @@ namespace Emulator
             foreach (var c in memory.ToArray())
                 Console.Write(c);
 
-            Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}Cycles: {cycles}, Elapsed: {elapsed}, Op/s: {cycles}/{elapsed.TotalMilliseconds / 1000}ms");
+            Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}Cycles: {cycles} | Elapsed: {elapsed.TotalMilliseconds:F2}ms | Op/s: {cycles * 1000 / elapsed.TotalMilliseconds:F2}");
         }
 
         private static void OnFinish(object sender, MachineEventArgs e)
