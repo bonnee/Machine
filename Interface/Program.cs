@@ -1,82 +1,90 @@
-﻿using System.Diagnostics;
+﻿using Simulator;
+using System.Diagnostics;
 
-namespace Emulator
+namespace Interface;
+
+internal class Program
 {
-    internal class MainClass
+    private static Machine m;
+    private static readonly Stopwatch s = new();
+
+    public static void Main(string[] args)
     {
-        private static Machine m;
-        private static readonly Stopwatch s = new();
+        var (symbols, delay) = ParseArgs(args);
 
-        public static void Main(string[] args)
+        Console.WriteLine("Loading...");
+
+        m = new Machine(new List<char>(symbols), File.ReadAllLines(args[0]));
+        //m.Cycle += OnCycle;
+        m.Finish += OnFinish;
+
+        Run(delay);
+    }
+
+    private static (string, int) ParseArgs(string[] args)
+    {
+        var symbols = "_";
+        var delay = 0;
+
+        if (args.Length == 0)
         {
-            var (mem, delay) = ParseArgs(args);
-
-            Console.WriteLine("Loading...");
-
-            m = new Machine(new List<char>(mem), File.ReadAllLines(args[0]));
-            //m.Cycle += OnCycle;
-            m.Finish += OnFinish;
-
-            Run(delay);
+            throw new ArgumentException("No arguments provided.");
         }
 
-        private static (string, int) ParseArgs(string[] args)
+        if (!File.Exists(args[0]))
         {
-            var mem = "_";
-            var delay = 0;
-
-            if (args.Length == 0)
-            {
-                throw new ArgumentException("No arguments provided.");
-            }
-
-            if (!File.Exists(args[0]))
-            {
-                throw new FileNotFoundException(args[0]);
-            }
-
-            switch (args.Length)
-            {
-                case 2:
-                    mem = args[1];
-                    break;
-                case 3:
-                    delay = Convert.ToInt32(args[2]);
-                    break;
-            }
-
-            return (mem, delay);
+            throw new FileNotFoundException(args[0]);
         }
 
-        private static void Run(int delay)
+        switch (args.Length)
         {
-            Console.WriteLine("Computing...");
-
-            s.Start();
-            m.Run("0", delay);
-            s.Stop();
-
-            Console.WriteLine("Done.");
+            case 2:
+                symbols = args[1];
+                break;
+            case 3:
+                delay = Convert.ToInt32(args[2]);
+                break;
         }
 
-        private static void Print(Memory<char> memory, int cycles, TimeSpan elapsed)
-        {
-            Console.WriteLine();
+        return (symbols, delay);
+    }
 
-            foreach (var c in memory.ToArray())
-                Console.Write(c);
+    private static void Run(int delay)
+    {
+        Console.WriteLine("Computing...");
 
-            Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}Cycles: {cycles} | Elapsed: {elapsed.TotalMilliseconds:F2}ms | Op/s: {cycles * 1000 / elapsed.TotalMilliseconds:F2}");
-        }
+        s.Start();
+        m.Run(State.ZERO, delay);
+        s.Stop();
 
-        private static void OnFinish(object sender, MachineEventArgs e)
-        {
-            Print(e.Memory, e.Cycles, s.Elapsed);
-        }
+        Console.WriteLine("Done.");
+    }
 
-        private static void OnCycle(object sender, MachineEventArgs e)
-        {
-            Print(e.Memory, e.Cycles, s.Elapsed);
-        }
+    private static void OnFinish(object sender, MachineEventArgs e)
+    {
+        Print(e.Tape, e.Cycles, s.Elapsed);
+    }
+
+    private static void OnCycle(object sender, MachineEventArgs e)
+    {
+        Print(e.Tape);
+    }
+
+    private static void Print(string tape)
+    {
+        Console.WriteLine();
+
+        foreach (var c in tape)
+            Console.Write(c);
+    }
+
+    private static void Print(string tape, int cycles, TimeSpan elapsed)
+    {
+        Console.WriteLine();
+
+        foreach (var c in tape)
+            Console.Write(c);
+
+        Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}Cycles: {cycles} | Elapsed: {elapsed.TotalMilliseconds:F2}ms | Op/s: {cycles * 1000 / elapsed.TotalMilliseconds:F2}");
     }
 }
